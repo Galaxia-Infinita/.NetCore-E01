@@ -1,0 +1,48 @@
+﻿@model IEnumerable<LabWeb_02.Models.Pedido> 
+@{
+    ViewData["Title"] = "PedidosporCliente";
+}
+
+<h1>Busqueda de Pedidos por Cliente</h1>
+<br />
+<a href="/VentasIDAT/Index">Retornar a Consulta de Ventas</a>
+<br />
+
+<form action="/VentasIDAT/PedidosporCliente">
+    <p>Seleccionar un Cliente</p>
+    <select name="codigo" asp-items="ViewBag.clientes">
+        <option selected>Seleccionar</option>
+    </select>
+    <input type="submit" value="Buscar" />
+</form>
+
+<table class="table table-bordered table-striped">
+    <tr>
+        <th>Nro.Pedido</th>
+        <th>Nombre de Compañia</th>
+        <th>Fecha de Pedido</th>
+        <th>Pago de Envio</th>
+    </tr>
+    <!--iniciando la lectura del Model => Entidad(Pedido) -->
+    @{decimal? totalpagos = 0;
+        string nb = string.Empty; }
+
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>@item.IdPedido</td>
+            <td>@item.IdClienteNavigation.NombreCompañia</td>
+            <td>@String.Format("{0:MM/dd/yyyy}", @item.FechaPedido)</td>
+            <td>@item.Cargo</td>
+        </tr>
+        totalpagos += item.Cargo;
+
+        if (DateTime.IsLeapYear(item.FechaPedido.Value.Year)) //IsLeapYear para recuperar años bisiestos
+        {
+            nb += item.FechaPedido.Value.Year.ToString()+ " ";
+        }
+    }
+    <tr><td colspan="4">Suma de Pagos de Envios:S/. @totalpagos</td></tr>
+    <tr><td colspan="4">Años bisiestos encontrados: @nb</td></tr>
+</table>
+

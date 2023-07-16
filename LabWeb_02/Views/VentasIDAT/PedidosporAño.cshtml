@@ -1,0 +1,40 @@
+﻿@model IEnumerable<LabWeb_02.ViewModel.ConsultaPedidosporAnio>
+@{
+    ViewData["Title"] = "PedidosporAño";
+}
+
+<h1>Consulta de Pedidos por Año</h1>
+<br />
+<!--link de regreso a pagina principal-->
+<a href="/VentasIDAT/Index">Retornar a lista de Consulta</a>
+<br />
+<!--formulario de opciones a escoger-->
+<form action="/VentasIDAT/PedidosporAño">
+    <p>Seleccione un Año</p>
+    <select name="anio" asp-items="ViewBag.anios"> <!--nombre "anio" debe ser igual a parametro de metodo de donde proviene -->
+        <option selected>Seleccionar</option>
+    </select>
+    <input type="submit" value="Buscar" class="btn btn-primary"/>
+</form>
+<br />
+<!--mostrando total general de venta-->
+<h3>Total General de Venta: S/. @ViewBag.sumatotalcompra</h3>
+<!--mostrando tabla-->
+<table class="table table-bordered">
+    <tr>            <!--cabecera-->
+        <th>Nro.Pedido</th>
+        <th>Año de Venta</th>
+        <th>Nombre del Cliente</th>
+        <th>Total de Venta</th>
+    </tr>           <!--datos-->
+    @foreach (var item in Model) 
+    {
+        <tr>
+            <td>@item.nropedido</td>
+            <td>@item.anioVenta</td>
+            <td>@item.cliente</td>
+            <td>@item.total</td>
+        </tr>
+    }
+</table>
+

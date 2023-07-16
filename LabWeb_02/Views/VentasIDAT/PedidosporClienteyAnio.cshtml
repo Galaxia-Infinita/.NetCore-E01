@@ -1,0 +1,46 @@
+﻿@model IEnumerable<LabWeb_02.ViewModel.ConsultaPedidosporClienteyAnio>
+@{
+    ViewData["Title"] = "PedidosporClienteyAnio";
+}
+
+<h1>Busqueda de Pedidos por Cliente y Año de Venta</h1>
+<br />
+<a href="/VentasIDAT/Index">Retornar a Consulta de Ventas</a>
+<br />
+
+<form action="/VentasIDAT/PedidosporClienteyAnio">
+    <p>Seleccionar un Cliente</p>
+    <select name="codigo" asp-items="ViewBag.clientes">
+        <option selected>Seleccionar</option>
+    </select>
+    <p>Seleccione un Año</p>
+    <select name="anio" asp-items="ViewBag.anios">
+        <option selected>Seleccionar</option>
+    </select>
+    <input type="submit" value="Buscar" />
+</form>
+
+<table class="table table-bordered table-striped">
+    <tr>
+        <th>Nro.Orden</th>
+        <th>Nombre de Compañia</th>
+        <th>Fecha de Orden</th>
+        <th>Mes de Venta</th>
+        <th>Año</th>
+        <th>Pago de Envio</th>
+    </tr>
+    @{decimal? pagoenvio = 0; }
+    @foreach (var item in Model) 
+    {
+        <tr>
+            <td>@item.NroPedido</td>
+            <td>@item.Cliente</td>
+            <td>@String.Format("{0:MM/dd/yyyy}", @item.FechaPedido)</td>
+            <td>@item.MesVenta</td>
+            <td>@item.AnioVenta</td>
+            <td>S/.@item.CargoEnvio</td>
+        </tr>
+        pagoenvio += item.CargoEnvio;
+    }
+    <tr><td colspan="6">Suma de Pagos de Envios: S/.@pagoenvio</td></tr>
+</table>
